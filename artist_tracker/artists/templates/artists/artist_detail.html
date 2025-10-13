@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}{{ artist.name }}{% endblock %}
+
+{% block content %}
+  {% if artist %}
+    <h1>{{ artist.name }}</h1>
+
+    {% if artist.description %}
+      <p><strong>Description:</strong> {{ artist.description }}</p>
+    {% else %}
+      <p>No description available.</p>
+    {% endif %}
+
+    {% if artist.debut_year %}
+      <p><strong>Debut Year:</strong> {{ artist.debut_year }}</p>
+    {% endif %}
+
+    <p><a href="{% url 'artist_list' %}">← Back to all artists</a></p>
+
+  {% else %}
+    <p>No artist found with that ID.</p>
+  {% endif %}
+{% endblock %}
