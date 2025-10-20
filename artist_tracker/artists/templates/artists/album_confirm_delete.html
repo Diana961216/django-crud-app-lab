@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Delete {{ object.title }} | Artist Tracker{% endblock %}
+{% block content %}
+  <h2>Delete Album</h2>
+  <p>Are you sure you want to delete <strong>{{ object.title }}</strong> by <strong>{{ object.artist.name }}</strong>?</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, delete</button>
+    <a href="{% url 'artist_detail' object.artist.id %}" role="button" class="secondary">Cancel</a>
+  </form>
+{% endblock %}

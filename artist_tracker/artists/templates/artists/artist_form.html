@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{{ view.object|default:"Add New Artist" }} | Artist Tracker{% endblock %}
+
+{% block content %}
+  <h2>{% if view.object %}Edit Artist{% else %}Add New Artist{% endif %}</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">
+      {% if view.object %}Update{% else %}Create{% endif %}
+    </button>
+  </form>
+
+  <p><a href="{% url 'artist_list' %}">← Back to Artist List</a></p>
+{% endblock %}

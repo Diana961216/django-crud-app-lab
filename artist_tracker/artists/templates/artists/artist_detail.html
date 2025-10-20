@@ -21,4 +21,31 @@
   {% else %}
     <p>No artist found with that ID.</p>
   {% endif %}
+  <hr />
+<section>
+  <h3>Albums</h3>
+
+  {% if artist.albums.all %}
+    <ul>
+      {% for album in artist.albums.all %}
+        <li>
+          <a href="{% url 'album_detail' album.id %}">{{ album.title }}</a>
+          {% if album.release_year %} — {{ album.release_year }}{% endif %}
+          · <a href="{% url 'album_update' album.id %}">Edit</a>
+          · <a href="{% url 'album_delete' album.id %}">Delete</a>
+        </li>
+      {% empty %}
+        <li>No albums yet.</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No albums yet.</p>
+  {% endif %}
+
+  <p>
+    <a href="{% url 'album_create' artist.id %}" role="button">Add Album</a>
+    <a href="{% url 'artist_update' artist.id %}" role="button">Edit Artist</a>
+    <a href="{% url 'artist_delete' artist.id %}" role="button" class="secondary">Delete Artist</a>
+  </p>
+</section>
 {% endblock %}

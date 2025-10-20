@@ -6,8 +6,20 @@ class Artist(models.Model):
     description = models.TextField(blank=True)
     debut_year = models.PositiveIntegerField(null=True, blank=True)
 
-    class Meta:
-        ordering = ["name"]
-
     def __str__(self):
         return self.name
+
+
+class Album(models.Model):
+    artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name="albums")
+    title = models.CharField(max_length=150)
+    release_year = models.PositiveIntegerField(null=True, blank=True)
+    notes = models.TextField(blank=True)
+
+    class Meta:
+        ordering = ["-release_year", "title"]
+
+    def __str__(self):
+        return (
+            f"{self.title} ({self.release_year})" if self.release_year else self.title
+        )

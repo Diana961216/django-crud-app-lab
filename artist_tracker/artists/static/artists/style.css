@@ -1,0 +1,114 @@
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background-color: #f8f9fb;
+    color: #222;
+    margin: 40px;
+    padding: 0;
+    line-height: 1.5;
+  }
+  
+  h1, h2, h3 {
+    color: #333;
+    margin-top: 20px;
+  }
+  
+  nav {
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 14px 30px;
+  }
+  
+  nav a {
+    color: #333;
+    text-decoration: none;
+    margin-right: 20px;
+    font-weight: 500;
+  }
+  
+  nav a:hover {
+    color: #007bff;
+  }
+  
+  main, section {
+    margin: 30px auto;
+    max-width: 850px;
+    padding: 0 20px;
+  }
+  
+  hr {
+    margin: 20px 0;
+    border: none;
+    border-top: 1px solid #ddd;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 15px;
+  }
+  
+  ul li {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    padding: 12px 18px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  ul li a {
+    color: #007bff;
+  }
+  
+  ul li a:hover {
+    text-decoration: underline;
+  }
+  
+  /* --- Buttons --- */
+  button, [role="button"], input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    margin-right: 6px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  button:hover, [role="button"]:hover {
+    background-color: #0056b3;
+  }
+  
+  .secondary {
+    background-color: #ccc;
+    color: #333;
+  }
+  
+  .secondary:hover {
+    background-color: #bbb;
+  }
+  
+
+  form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    margin-top: 20px;
+  }
+  
+  form p {
+    margin-bottom: 14px;
+  }
+  
+  p {
+    margin: 10px 0;
+  }
+  
+  section p:last-child {
+    margin-top: 25px;
+  }
+  

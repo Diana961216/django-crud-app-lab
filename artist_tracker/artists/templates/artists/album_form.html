@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{% if form.instance.pk %}Edit Album{% else %}Add Album{% endif %} | Artist Tracker{% endblock %}
+{% block content %}
+  <h2>{% if form.instance.pk %}Edit Album{% else %}Add Album{% endif %}</h2>
+
+  {% if artist %}
+    <p>For artist: <strong>{{ artist.name }}</strong></p>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">{% if form.instance.pk %}Update{% else %}Create{% endif %}</button>
+    {% if artist %}
+      <a href="{% url 'artist_detail' artist.id %}" role="button" class="secondary">Cancel</a>
+    {% elif form.instance.pk %}
+      <a href="{% url 'artist_detail' form.instance.artist.id %}" role="button" class="secondary">Cancel</a>
+    {% else %}
+      <a href="{% url 'artist_list' %}" role="button" class="secondary">Cancel</a>
+    {% endif %}
+  </form>
+{% endblock %}
+
