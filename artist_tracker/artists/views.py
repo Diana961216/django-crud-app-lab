@@ -1,51 +1,57 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse, reverse_lazy
-from .models import Artist, Album
+from .models import Artist, Album, Genre
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import redirect
 
 
 def home(request):
     return render(request, "home.html")
 
 
+@login_required
 def artist_list(request):
     artists = Artist.objects.all()
     return render(request, "artists/artist_list.html", {"artists": artists})
 
 
+@login_required
 def artist_detail(request, artist_id):
     artist = get_object_or_404(Artist, id=artist_id)
     return render(request, "artists/artist_detail.html", {"artist": artist})
 
 
-class ArtistCreate(CreateView):
+class ArtistCreate(LoginRequiredMixin, CreateView):
     model = Artist
     fields = "__all__"
     template_name = "artists/artist_form.html"
 
 
-class ArtistUpdate(UpdateView):
+class ArtistUpdate(LoginRequiredMixin, UpdateView):
     model = Artist
     fields = "__all__"
     template_name = "artists/artist_form.html"
 
 
-class ArtistDelete(DeleteView):
+class ArtistDelete(LoginRequiredMixin, DeleteView):
     model = Artist
     success_url = "/artists/"
     template_name = "artists/artist_confirm_delete.html"
 
 
-class AlbumDetail(DetailView):
+class AlbumDetail(LoginRequiredMixin, DetailView):
     model = Album
     template_name = "artists/album_detail.html"
     context_object_name = "album"
 
 
-class AlbumCreate(CreateView):
+class AlbumCreate(LoginRequiredMixin, CreateView):
     model = Album
-    fields = ["title", "release_year", "notes"]
+    fields = ["title", "release_year", "notes", "genres"]
     template_name = "artists/album_form.html"
 
     def dispatch(self, request, *args, **kwargs):
@@ -54,8 +60,7 @@ class AlbumCreate(CreateView):
 
     def form_valid(self, form):
         form.instance.artist = self.artist
-        response = super().form_valid(form)
-        return response
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse("artist_detail", args=[self.artist.id])
@@ -66,18 +71,29 @@ class AlbumCreate(CreateView):
         return ctx
 
 
-class AlbumUpdate(UpdateView):
+class AlbumUpdate(LoginRequiredMixin, UpdateView):
     model = Album
-    fields = ["title", "release_year", "notes"]
+    fields = ["title", "release_year", "notes", "genres"]
     template_name = "artists/album_form.html"
 
     def get_success_url(self):
         return reverse("artist_detail", args=[self.object.artist.id])
 
 
-class AlbumDelete(DeleteView):
+class AlbumDelete(LoginRequiredMixin, DeleteView):
     model = Album
     template_name = "artists/album_confirm_delete.html"
 
     def get_success_url(self):
         return reverse_lazy("artist_detail", args=[self.object.artist.id])
+
+
+def signup(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("login")
+    else:
+        form = UserCreationForm()
+    return render(request, "registration/signup.html", {"form": form})

@@ -2,9 +2,32 @@
 {% block title %}{{ album.title }} | Artist Tracker{% endblock %}
 {% block content %}
   <h2>{{ album.title }}</h2>
-  <p><strong>Artist:</strong> <a href="{% url 'artist_detail' album.artist.id %}">{{ album.artist.name }}</a></p>
-  {% if album.release_year %}<p><strong>Release year:</strong> {{ album.release_year }}</p>{% endif %}
-  {% if album.notes %}<p><strong>Notes:</strong> {{ album.notes }}</p>{% endif %}
+
+  {% if album.artist %}
+    <p><strong>Artist:</strong>
+      <a href="{% url 'artist_detail' album.artist.id %}">{{ album.artist.name }}</a>
+    </p>
+  {% else %}
+    <p><strong>Artist:</strong> Unknown</p>
+  {% endif %}
+
+  {% if album.release_year %}
+    <p><strong>Release year:</strong> {{ album.release_year }}</p>
+  {% endif %}
+
+  {% if album.notes %}
+    <p><strong>Notes:</strong> {{ album.notes }}</p>
+  {% endif %}
+
+  {% if album.genres.all %}
+    <p><strong>Genres:</strong>
+      {% for genre in album.genres.all %}
+        {{ genre.name }}{% if not forloop.last %}, {% endif %}
+      {% empty %}
+        None
+      {% endfor %}
+    </p>
+  {% endif %}
 
   <p>
     <a href="{% url 'album_update' album.id %}" role="button">Edit</a>

@@ -21,6 +21,7 @@ from artists import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", views.home, name="home"),  # home page
-    path("artists/", include("artists.urls")),  # app urls
+    path("", views.home, name="home"),
+    path("artists/", include("artists.urls")),
+    path("accounts/", include("django.contrib.auth.urls")),  # auth routes
 ]

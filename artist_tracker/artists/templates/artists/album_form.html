@@ -9,8 +9,22 @@
 
   <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">{% if form.instance.pk %}Update{% else %}Create{% endif %}</button>
+    <p><strong>Title</strong></p>
+    {{ form.title }}
+
+    <p><strong>Release Year</strong></p>
+    {{ form.release_year }}
+
+    <p><strong>Notes</strong></p>
+    {{ form.notes }}
+
+    <p><strong>Genres (hold ⌘/Ctrl to select multiple)</strong></p>
+    {{ form.genres }}
+
+    <button type="submit">
+      {% if form.instance.pk %}Update{% else %}Create{% endif %}
+    </button>
+
     {% if artist %}
       <a href="{% url 'artist_detail' artist.id %}" role="button" class="secondary">Cancel</a>
     {% elif form.instance.pk %}
@@ -20,4 +34,5 @@
     {% endif %}
   </form>
 {% endblock %}
+
 

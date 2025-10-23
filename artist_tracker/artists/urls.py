@@ -15,4 +15,5 @@ urlpatterns = [
     path("albums/<int:pk>/", views.AlbumDetail.as_view(), name="album_detail"),
     path("albums/<int:pk>/update/", views.AlbumUpdate.as_view(), name="album_update"),
     path("albums/<int:pk>/delete/", views.AlbumDelete.as_view(), name="album_delete"),
+    path("signup/", views.signup, name="signup"),
 ]

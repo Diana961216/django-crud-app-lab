@@ -1,51 +1,82 @@
 {% extends "base.html" %}
-
-{% block title %}{{ artist.name }}{% endblock %}
-
+{% block title %}{{ artist.name }} | Artist Tracker{% endblock %}
 {% block content %}
-  {% if artist %}
-    <h1>{{ artist.name }}</h1>
+  <h1>{{ artist.name }}</h1>
 
-    {% if artist.description %}
-      <p><strong>Description:</strong> {{ artist.description }}</p>
-    {% else %}
-      <p>No description available.</p>
-    {% endif %}
-
-    {% if artist.debut_year %}
-      <p><strong>Debut Year:</strong> {{ artist.debut_year }}</p>
-    {% endif %}
-
-    <p><a href="{% url 'artist_list' %}">← Back to all artists</a></p>
-
+  {% if artist.description %}
+    <p><strong>Description:</strong> {{ artist.description }}</p>
   {% else %}
-    <p>No artist found with that ID.</p>
+    <p>No description available.</p>
   {% endif %}
+
+  {% if artist.debut_year %}
+    <p><strong>Debut Year:</strong> {{ artist.debut_year }}</p>
+  {% endif %}
+
+  <p><a href="{% url 'artist_list' %}">← Back to all artists</a></p>
   <hr />
-<section>
-  <h3>Albums</h3>
 
-  {% if artist.albums.all %}
-    <ul>
-      {% for album in artist.albums.all %}
-        <li>
-          <a href="{% url 'album_detail' album.id %}">{{ album.title }}</a>
-          {% if album.release_year %} — {{ album.release_year }}{% endif %}
-          · <a href="{% url 'album_update' album.id %}">Edit</a>
-          · <a href="{% url 'album_delete' album.id %}">Delete</a>
-        </li>
-      {% empty %}
-        <li>No albums yet.</li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No albums yet.</p>
-  {% endif %}
+  <section>
+    <h3>Albums</h3>
 
-  <p>
-    <a href="{% url 'album_create' artist.id %}" role="button">Add Album</a>
-    <a href="{% url 'artist_update' artist.id %}" role="button">Edit Artist</a>
-    <a href="{% url 'artist_delete' artist.id %}" role="button" class="secondary">Delete Artist</a>
-  </p>
-</section>
+    {% if artist.albums.exists %}
+      <div style="margin-bottom: 10px; font-weight: 600;">
+        <span style="display: inline-block; width: 40%;">Title</span>
+        <span style="display: inline-block; width: 15%;">Year</span>
+        <span style="display: inline-block; width: 25%;">Genres</span>
+        <span style="display: inline-block; width: 20%;">Actions</span>
+      </div>
+
+      <ul style="list-style-type:none; padding-left:0;">
+        {% for album in artist.albums.all %}
+          {% if album.id %}
+            <li style="margin-bottom: 10px;">
+              <!-- Title -->
+              <span style="display: inline-block; width: 40%;">
+                <a href="{% url 'album_detail' album.id %}">{{ album.title }}</a>
+              </span>
+
+              <!-- Year -->
+              <span style="display: inline-block; width: 15%;">
+                {% if album.release_year %}
+                  {{ album.release_year }}
+                {% else %}
+                  —
+                {% endif %}
+              </span>
+
+              <!-- Genres -->
+              <span style="display: inline-block; width: 25%;">
+                {% if album.genres.all %}
+                  {% for genre in album.genres.all %}
+                    {{ genre.name }}{% if not forloop.last %}, {% endif %}
+                  {% empty %}
+                    None
+                  {% endfor %}
+                {% else %}
+                  None
+                {% endif %}
+              </span>
+
+              <!-- Actions -->
+              <span style="display: inline-block; width: 20%;">
+                <a href="{% url 'album_update' album.id %}">Edit</a> ·
+                <a href="{% url 'album_delete' album.id %}">Delete</a>
+              </span>
+            </li>
+          {% endif %}
+        {% empty %}
+          <li>No albums yet.</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No albums yet.</p>
+    {% endif %}
+
+    <p style="margin-top: 20px;">
+      <a href="{% url 'album_create' artist.id %}" role="button">Add Album</a>
+      <a href="{% url 'artist_update' artist.id %}" role="button">Edit Artist</a>
+      <a href="{% url 'artist_delete' artist.id %}" role="button" class="secondary">Delete Artist</a>
+    </p>
+  </section>
 {% endblock %}
